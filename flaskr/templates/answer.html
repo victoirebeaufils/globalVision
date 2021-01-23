@@ -18,10 +18,9 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
     <script src="https://js.arcgis.com/4.18/"></script>
     <script>
-        require(["esri/Map", "esri/views/SceneView", "esri/Graphic", "esri/layers/GraphicsLayer","dojo/parser","esri/geometry/support/webMercatorUtils","dojo/dom" ], function (Map,
+        require(["esri/Map", "esri/views/SceneView", "esri/Graphic", "esri/layers/GraphicsLayer"], function (Map,
                     SceneView,
-                    Graphic, GraphicsLayer,
-                    parser,webMercatorUtils,dom) {
+                    Graphic, GraphicsLayer) {
 
 
                     var map = new Map({
@@ -37,18 +36,13 @@
                         center: [-101.17, 21.78] // Sets the center point of view with lon/lat
                     });
 
-                    var zLongitude = [40, 38];
-                    var zLatitude = [74, 74]
+                    var zLongitude = [40];
+                    var zLatitude = [74]
                     var graphicsLayer = new GraphicsLayer();
                     map.layers.add(graphicsLayer);
                     var simpleMarkerSymbol = {
                         type: "simple-marker", // color: [226, 119, 40], // orange size: 30, style: "circle", outline: { color: [255, 255, 255], //
-                        width: 2,
-                        color: [226, 119, 40],
-                        size: 30,
-                        outline: {              color: [255, 255, 255], // white             
-                         width: 2           
-                        }
+                        width: 2
                     }
 
                     for (i = 0; i < zLongitude.length; i++) { // Create a point 
