@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask import render_template
 from data import Data
 
 def create_app(test_config=None):
@@ -28,5 +29,9 @@ def create_app(test_config=None):
     def hello():
         outdata = Data.temp()
         return outdata
+
+    @app.route('/index.html')
+    def index():
+        return render_template('index.html')
 
     return app

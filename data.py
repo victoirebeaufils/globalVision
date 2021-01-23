@@ -1,7 +1,9 @@
 import cdsapi
 import os
 import csv
+
 from netCDF4 import Dataset
+
 
 class Data:
     def temp():
@@ -17,25 +19,21 @@ class Data:
                 'month': '04',
             },
             'download.tar.gz')
-"""
-        c.retrieve("insitu-glaciers-elevation-mass",
-            {
-                "variable": "all",
-                "product_type": "elevation_change",
-                "file_version": "20170405",
-                "format": "tgz"
-            },
-            "download.tar.gz")
-
-"""
         os.system("tar -xf download.tar.gz")
 
+        tmp = "{lon:.2f}"
         cat = ""
-        """
-        with open('_C3S_ELEVATION_CHANGE_DATA_20170405.csv', newline='', encoding='unicode_escape') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                cat = cat + row['PU;NAME;WGMS_ID;SURVEY_ID;SURVEY_DATE;REFERENCE_DATE;AREA_SURVEY_YEAR;AREA_CHANGE;ELEV_CH;ELEV_CH_UNC;INVESTIGATOR;SPONS_AGENCY;REFERENCE;REMARKS']
-        """
+
+        root = Dataset("20160420120000-ESACCI-L4_GHRSST-SST-GMPE-GLOB_CDR2.0-v02.0-fv01.0.nc",
+            "r", format="NETCDF4")
+
+        time = root['time'][0]
+        lons = root['lon']
+        lats = root['lat']
+        ssts = root['analysed_sst']
+
+        #cat = tmp.format(lon = root['lon'])
+
+        root.close()
 
         return cat
