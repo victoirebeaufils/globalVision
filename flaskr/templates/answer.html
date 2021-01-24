@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Intro to SceneView - Create a 3D map</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.18/"></script>
+    <script>
+        require(["esri/Map", "esri/views/SceneView", "esri/Graphic", "esri/layers/GraphicsLayer"], function (Map,
+                    SceneView,
+                    Graphic, GraphicsLayer) {
+
+
+                    var map = new Map({
+                        basemap: "topo-vector",
+                        ground: "world-elevation",
+                        showLabels: true
+                    });
+
+                    var view = new SceneView({
+                        container: "viewDiv", // Reference to the scene div created in step 5
+                        map: map, // Reference to the map object created before the scene
+                        scale: 50000000, // Sets the initial scale to 1:50,000,000
+                        center: [-101.17, 21.78] // Sets the center point of view with lon/lat
+                    });
+
+                    var zLongitude = [40];
+                    var zLatitude = [74]
+                    var graphicsLayer = new GraphicsLayer();
+                    map.layers.add(graphicsLayer);
+                    var simpleMarkerSymbol = {
+                        type: "simple-marker", // color: [226, 119, 40], // orange size: 30, style: "circle", outline: { color: [255, 255, 255], //
+                        width: 2
+                    }
+
+                    for (i = 0; i < zLongitude.length; i++) { // Create a point 
+                        var point = {
+                            type: "point",
+                            longitude: zLongitude[i],
+                            latitude: zLatitude[i],
+                        };
+                        var pointGraphic = new Graphic({
+                            geometry: webMercatorUtils.geographicToWebMercator(point),
+                            symbol: simpleMarkerSymbol
+                        });
+                        graphicsLayer.add(pointGraphic);
+                    }
+                });
+    </script>
+</head>
+
+<body>
+    <div id="viewDiv"> <span id="layerToggle" class="esri-widget"> <input type="checkbox" id="streetsLayer" checked />
+            Transportation </span></div>
+</body>
+
+</html>
