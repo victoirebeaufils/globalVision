@@ -37,9 +37,9 @@ class Data:
 
        # cat = "{seconds:d}".format(seconds=time)
 
-        ###DATA ACCESS LOOP
-        for i in range(100,len(lons)-1,20):
-            for j in range(100,len(lats)-1,15):
+        for i in range(100,len(lons)-1,50):
+            for j in range(100,len(lats)-1,10):
+
                 if (ssts[0,j,i] != '--'):
                     cat = cat + "{lon:.4f}, {lat:.4f}, {sst:.4f}:".format(lon=lons[i],
                         lat=lats[j],
