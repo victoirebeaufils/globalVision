@@ -28,6 +28,12 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         outdata = Data.temp()
+
+        ##DATA ACCESS
+        longitude = outdata.lons        # 1 dim Array
+        latitude = outdata.lats         # 1 dim Array
+        temperature = outdata.ssts      # 3 dim Array [<Always 0>, <latitude index>, <longitude index>]
+
         return outdata
 
     @app.route('/index.html')

@@ -42,6 +42,7 @@ class Data:
 
         cat = "{seconds:d}<br>".format(seconds=time)
 
+        ###DATA ACCESS LOOP
         for i in range(100,len(lons)-1,20):
             for j in range(100,len(lats)-1,2):
                 if (ssts[0,j,i] != '--'):
@@ -50,7 +51,7 @@ class Data:
                         sst=ssts[0,j,i])
                     print (ssts[0,j,i])
 
-        root.close()
+        # root.close() ## uncomment to close, might break data access in __init__.py
 
         return cat
 
