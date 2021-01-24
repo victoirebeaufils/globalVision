@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Intro to SceneView - Create a 3D map</title>
+  <title>Hack proj name</title>
   <style>
     html,
     body,
@@ -19,11 +19,30 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
   <script src="https://js.arcgis.com/4.18/"></script>
-  <script>
+  <script type="text/javascript">
+    //Big ass string to parse from
+
+
+
+
+
+
     var zLongitude = [40, 38, 38, 26];
     var zLatitude = [74, 60, 50, 40]
-    var temperatures = [12, 14, 21, 30];
+    var temperatures = [275, 280, 290, 300];
 
+
+        var outdata  = "{{ outdata }}"
+
+    var measurements = outdata.split(':');
+
+    measurements.forEach(element => {
+      var arr = element.split(',');
+      zLongitude.push(arr[0])
+      zLatitude.push(arr[1])
+
+      temperatures.push(arr[2])
+    });
     //COLORS
     var purple = "#8011ff";
     var darkblue = "#5f6aff";
@@ -32,176 +51,148 @@
     var red = "#ee4646";
 
     function setColor(temp) {
-      if (temp < 5.4) {
+      if (temp < 278.55) {
         return purple;
-      } else if (temp >= 5.4 && temp < 12.8) {
+      } else if (temp >= 278.55 && temp < 285.95) {
         return darkblue;
-      } else if (temp >= 12.8 && temp < 20.2) {
+      } else if (temp >=  285.95 && temp < 293.35) {
         return lightblue;
-      } else if (temp >= 20.2 && temp < 27.6) {
+      } else if (temp >= 293.35 && temp < 300.75) {
         return yellow;
-      } else if (temp >= 27.6) {
+      } else if (temp >= 300.75) {
         return red;
       }
     }
     require(["esri/Map", "esri/views/SceneView", "esri/Graphic", "esri/layers/GraphicsLayer", "dojo/parser",
-      "esri/geometry/support/webMercatorUtils", "dojo/dom",
-      "esri/symbols/TextSymbol",
-      "esri/Color",
-      "esri/widgets/TimeSlider",
-      "esri/widgets/Search",
-    ], function (Map,
-      SceneView,
-      Graphic, GraphicsLayer,
-      parser, webMercatorUtils, dom,
-      TextSymbol, Color, Search, TimeSlider) {
+          "esri/geometry/support/webMercatorUtils", "dojo/dom",
+          "esri/symbols/TextSymbol",
+          "esri/Color",
+          "esri/widgets/Search",
+        ], function (Map,
+          SceneView,
+          Graphic, GraphicsLayer,
+          parser, webMercatorUtils, dom,
+          TextSymbol, Color, Search) {
 
 
-      var map = new Map({
-        basemap: "topo-vector",
-        ground: "world-elevation",
-        showLabels: true
-      });
+          var map = new Map({
+            basemap: "topo-vector",
+            ground: "world-elevation",
+            showLabels: true
+          });
 
-      var view = new SceneView({
-        container: "viewDiv", // Reference to the scene div created in step 5
-        map: map, // Reference to the map object created before the scene
-        scale: 50000000, // Sets the initial scale to 1:50,000,000
-        center: [-101.17, 21.78] // Sets the center point of view with lon/lat
-      });
-      const searchWidget = new Search({
-        view: view
-      });
-      // Adds the search widget below other elements in
-      // the top left corner of the view
-      view.ui.add(searchWidget, {
-        position: "top-left",
-        index: 2
-      });
-
-
+          var view = new SceneView({
+            container: "viewDiv", // Reference to the scene div created in step 5
+            map: map, // Reference to the map object created before the scene
+            scale: 50000000, // Sets the initial scale to 1:50,000,000
+            center: [-101.17, 21.78] // Sets the center point of view with lon/lat
+          });
+          const searchWidget = new Search({
+            view: view
+          });
+          // Adds the search widget below other elements in
+          // the top left corner of the view
+          view.ui.add(searchWidget, {
+            position: "top-left",
+            index: 2
+          });
 
 
 
-      var textLayer = new GraphicsLayer();
-      map.layers.add(textLayer);
+
+
+          var textLayer = new GraphicsLayer();
+          map.layers.add(textLayer);
 
 
 
-      for (i = 0; i < zLongitude.length; i++) { // Create a point 
-        var textSymbol = {
-          type: "text", // autocasts as new TextSymbol()
-          color: "white",
+          for (i = 0; i < zLongitude.length; i++) { // Create a point 
+            var textSymbol = {
+              type: "text", // autocasts as new TextSymbol()
+              color: "white",
 
-          text: temperatures[i],
-          xoffset: 3,
-          yoffset: 3,
-          font: { // autocasts as new Font()
-            size: 12,
-            family: "Josefin Slab",
-            //  weight: "bold"
+              text: temperatures[i],
+              xoffset: 3,
+              yoffset: 3,
+              font: { // autocasts as new Font()
+                size: 12,
+                family: "Josefin Slab",
+                //  weight: "bold"
+              }
+            };
+            var point = {
+              type: "point",
+              longitude: zLongitude[i],
+              latitude: zLatitude[i],
+            };
+            var textGraphic = new Graphic({
+              geometry: webMercatorUtils.geographicToWebMercator(point),
+              symbol: textSymbol
+            });
+
+            textLayer.add(textGraphic);
           }
-        };
-        var point = {
-          type: "point",
-          longitude: zLongitude[i],
-          latitude: zLatitude[i],
-        };
-        var textGraphic = new Graphic({
-          geometry: webMercatorUtils.geographicToWebMercator(point),
-          symbol: textSymbol
-        });
-
-        textLayer.add(textGraphic);
-      }
 
 
-      var graphicsLayer = new GraphicsLayer();
-      map.layers.add(graphicsLayer);
+          var graphicsLayer = new GraphicsLayer();
+          map.layers.add(graphicsLayer);
 
 
 
 
 
-      for (i = 0; i < zLongitude.length; i++) { // Create a point 
-        var simpleMarkerSymbol = {
-          type: "simple-marker", // color: [226, 119, 40], // orange size: 30, style: "circle", outline: { color: [255, 255, 255], //
-          width: 3,
-          color: setColor(temperatures[i]),
-          size: 30,
-          outline: {
-            color: [255, 255, 255], // white             
-            width: 1
+          for (i = 0; i < zLongitude.length; i++) { // Create a point 
+            var simpleMarkerSymbol = {
+              type: "simple-marker", // color: [226, 119, 40], // orange size: 30, style: "circle", outline: { color: [255, 255, 255], //
+              width: 3,
+              color: setColor(temperatures[i]),
+              size: 30,
+              outline: {
+                color: [255, 255, 255], // white             
+                width: 1
+              }
+            }
+            var point = {
+              type: "point",
+              longitude: zLongitude[i],
+              latitude: zLatitude[i],
+            };
+            var pointGraphic = new Graphic({
+              geometry: webMercatorUtils.geographicToWebMercator(point),
+              symbol: simpleMarkerSymbol
+            });
+
+
+
+            graphicsLayer.add(pointGraphic);
           }
-        }
-        var point = {
-          type: "point",
-          longitude: zLongitude[i],
-          latitude: zLatitude[i],
-        };
-        var pointGraphic = new Graphic({
-          geometry: webMercatorUtils.geographicToWebMercator(point),
-          symbol: simpleMarkerSymbol
-        });
 
 
+          const buttonF = document.getElementById('buttonF');
+          const buttonK = document.getElementById('buttonK');
+          const buttonC = document.getElementById('buttonC');
 
-        graphicsLayer.add(pointGraphic);
-      }
-      const timeSlider = new TimeSlider({
-        container: "timeSlider",
-        playRate: 50,
-        stops: {
-          interval: {
-            value: 1,
-            unit: "hours"
+          //turn from K to
+          buttonF.onclick = function () {
+            for (var i = 0; i < temperatures.length; i++) {
+              temperatures[i]
+            }
           }
-        }
-      });
-      view.ui.add(timeSlider, "bottom-left");
-
-      // wait till the layer view is loaded
-      view.whenLayerView(layer).then(function (lv) {
-        layerView = lv;
-
-        // start time of the time slider - 5/25/2019
-        const start = new Date(2019, 4, 25);
-        // set time slider's full extent to
-        // 5/25/5019 - until end date of layer's fullTimeExtent
-        timeSlider.fullTimeExtent = {
-          start: start,
-          end: layer.timeInfo.fullTimeExtent.end
-        };
-
-        // We will be showing earthquakes with one day interval
-        // when the app is loaded we will show earthquakes that
-        // happened between 5/25 - 5/26.
-        const end = new Date(start);
-        // end of current time extent for time slider
-        // showing earthquakes with one day interval
-        end.setDate(end.getDate() + 1);
-
-        // Values property is set so that timeslider
-        // widget show the first day. We are setting
-        // the thumbs positions.
-        timeSlider.values = [start, end];
-      });
-    });
+        })
   </script>
 </head>
 
 <body>
-  <div class="navbar">
-    <li><a href="#makingof"></a></li>
-  </div>
-  <div id="viewDiv"> <span id="layerToggle" class="esri-widget"> 
-  <div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-secondary " style="background-color: #8011ff;">F</button>
-    <button type="button" class="btn btn-secondary" style="background-color:#5f6aff;">K</button>
-    <button type="button" class="btn btn-secondary"  style="background-color:#49caff;">C</button>
-  </div>
-  </span>
-  </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light rounded  d-flex">
+    <div class="container  d-flex">
+    <a class="navbar-brand" href="#">Global Vision</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample09"
+      aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    </div>
+  </nav>
+  <div id="viewDiv"> </div>
 
 </body>
 

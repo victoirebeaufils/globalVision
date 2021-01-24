@@ -38,6 +38,9 @@ def create_app(test_config=None):
 
     @app.route('/index.html')
     def index():
-        return render_template('index.html')
+        outdata = Data.temp() # retrieves data from server (See data.py)
+        # return render_template('index.html')
+        # The real deal
+        return render_template('index.html', outdata = outdata)
 
     return app
