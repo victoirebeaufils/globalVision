@@ -51,15 +51,15 @@
     var red = "#ee4646";
 
     function setColor(temp) {
-      if (temp < 278.55) {
+      if (temp < 5.4) {
         return purple;
-      } else if (temp >= 278.55 && temp < 285.95) {
+      } else if (temp >= 5.4  && temp < 12.8) {
         return darkblue;
-      } else if (temp >=  285.95 && temp < 293.35) {
+      } else if (temp >=  12.8 && temp < 20.2) {
         return lightblue;
-      } else if (temp >= 293.35 && temp < 300.75) {
+      } else if (temp >= 20.2 && temp < 27.6) {
         return yellow;
-      } else if (temp >= 300.75) {
+      } else if (temp >= 27.6) {
         return red;
       }
     }

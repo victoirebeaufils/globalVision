@@ -41,7 +41,7 @@ class Data:
             for j in range(100,len(lats)-1,10):
 
                 if (ssts[0,j,i] != '--'):
-                    cat = cat + "{lon:.4f}, {lat:.4f}, {sst:.4f}:".format(lon=lons[i],
+                    cat = cat + "{lon:.1f}, {lat:.1f}, {sst:.1f}:".format(lon=lons[i],
                         lat=lats[j],
                         sst=ktoc(ssts[0,j,i]))
                     print (ssts[0,j,i])
