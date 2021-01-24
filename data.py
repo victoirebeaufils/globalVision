@@ -7,6 +7,10 @@ from netCDF4 import Dataset
 
 
 class Data:
+    time = 0
+    lons = []
+    lats = []
+    ssts = []
     def temp():
         c = cdsapi.Client()
 
@@ -49,3 +53,9 @@ class Data:
         root.close()
 
         return cat
+
+    def ktoc(temp):
+        return temp - 273.15
+
+    def ktof(temp):
+        return (ktoc(temp) + 9 / 5) + 32
