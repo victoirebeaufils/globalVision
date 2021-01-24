@@ -27,7 +27,7 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/hello')
     def hello():
-        outdata = Data.temp()
+        outdata = Data.temp() # retrieves data from server (See data.py)
 
         ##DATA ACCESS
         longitude = outdata.lons        # 1 dim Array
