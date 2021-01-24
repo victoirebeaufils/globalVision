@@ -44,7 +44,7 @@ class Data:
 
         ###DATA ACCESS LOOP
         for i in range(100,len(lons)-1,20):
-            for j in range(100,len(lats)-1,2):
+            for j in range(100,len(lats)-1,15):
                 if (ssts[0,j,i] != '--'):
                     cat = cat + "{lon:.4f}, {lat:.4f}, {sst:.4f}<br>".format(lon=lons[i],
                         lat=lats[j],
