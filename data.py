@@ -1,9 +1,13 @@
 import cdsapi
 import os
-import csv
 
 from netCDF4 import Dataset
 
+def ktoc(temp):
+    return temp - 273.15
+
+def ktof(temp):
+    return (ktoc(temp) + 9 / 5) + 32
 
 
 class Data:
@@ -11,20 +15,11 @@ class Data:
     lons = []
     lats = []
     ssts = []
-    def temp():
-        c = cdsapi.Client()
 
-        c.retrieve(
-            'satellite-sea-surface-temperature-ensemble-product',
-            {
-                'variable': 'all',
-                'format': 'tgz',
-                'day': '20',
-                'year': '2014',
-                'month': '04',
-            },
-            'download.tar.gz')
-        os.system("tar -xf download.tar.gz")
+
+
+    def temp():
+
 
         cat = ""
 
@@ -43,20 +38,14 @@ class Data:
        # cat = "{seconds:d}".format(seconds=time)
 
         ###DATA ACCESS LOOP
-        for i in range(100,len(lons)-1,50):
-            for j in range(100,len(lats)-1,10):
+        for i in range(100,len(lons)-1,20):
+            for j in range(100,len(lats)-1,15):
                 if (ssts[0,j,i] != '--'):
                     cat = cat + "{lon:.4f}, {lat:.4f}, {sst:.4f}:".format(lon=lons[i],
                         lat=lats[j],
-                        sst=ssts[0,j,i])
+                        sst=ktoc(ssts[0,j,i]))
                     print (ssts[0,j,i])
 
         # root.close() ## uncomment to close, might break data access in __init__.py
 
         return cat
-
-    def ktoc(temp):
-        return temp - 273.15
-
-    def ktof(temp):
-        return (ktoc(temp) + 9 / 5) + 32

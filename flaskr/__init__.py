@@ -1,4 +1,5 @@
 import os
+import cdsapi
 
 from flask import Flask
 from flask import render_template
@@ -10,6 +11,20 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
+
+    c = cdsapi.Client()
+
+    c.retrieve(
+        'satellite-sea-surface-temperature-ensemble-product',
+        {
+            'variable': 'all',
+            'format': 'tgz',
+            'day': '20',
+            'year': '2014',
+            'month': '04',
+        },
+        'download.tar.gz')
+    os.system("tar -xf download.tar.gz")
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -30,9 +45,9 @@ def create_app(test_config=None):
         outdata = Data.temp() # retrieves data from server (See data.py)
 
         ##DATA ACCESS
-        longitude = outdata.lons        # 1 dim Array
-        latitude = outdata.lats         # 1 dim Array
-        temperature = outdata.ssts      # 3 dim Array [<Always 0>, <latitude index>, <longitude index>]
+        longitude = Data.lons        # 1 dim Array
+        latitude = Data.lats         # 1 dim Array
+        temperature = Data.ssts      # 3 dim Array [<Always 0>, <latitude index>, <longitude index>]
 
         return outdata
 
