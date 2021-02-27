@@ -38,7 +38,7 @@ class Data:
        # cat = "{seconds:d}".format(seconds=time)
 
         for i in range(100,len(lons)-1,50):
-            for j in range(100,len(lats)-1,10):
+            for j in range(100,len(lats)-1,20):
 
                 if (ssts[0,j,i] != '--'):
                     cat = cat + "{lon:.1f}, {lat:.1f}, {sst:.1f}:".format(lon=lons[i],
